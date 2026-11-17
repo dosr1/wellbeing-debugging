@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="de">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Lokaler PKCE Login-Assistent für die David-Lloyd-API">
+    <title>David Lloyd · Login-Assistent</title>
+    <link rel="stylesheet" href="/static/styles.css">
+  </head>
+  <body>
+    <main class="shell">
+      <header class="topbar">
+        <div class="brand" aria-label="David Lloyd Login-Assistent">
+          <span class="brand-mark" aria-hidden="true">DL</span>
+          <span>Login-Assistent</span>
+        </div>
+        <div class="local-badge"><span></span> Läuft nur lokal</div>
+      </header>
+
+      <section class="intro">
+        <p class="eyebrow">WellbeingBot · Verbindung einrichten</p>
+        <h1>Sauber anmelden.<br><em>Tokens sicher übernehmen.</em></h1>
+        <p class="lede">Dieser Assistent führt dich durch den beobachteten OAuth‑PKCE‑Ablauf. Zugangsdaten werden nur direkt an den offiziellen Anbieter übertragen und niemals gespeichert.</p>
+      </section>
+
+      <section class="workspace" aria-labelledby="wizard-title">
+        <div class="progress" aria-label="Fortschritt">
+          <button class="progress-step active" data-step-jump="1"><b>01</b><span>Vorbereiten</span></button>
+          <span class="progress-line"></span>
+          <button class="progress-step" data-step-jump="2" disabled><b>02</b><span>Übernehmen</span></button>
+        </div>
+
+        <div class="panel" id="wizard-title">
+          <form id="start-form" class="step active" data-step="1" method="post">
+            <div class="step-heading">
+              <span class="step-kicker">Schritt 1 von 2</span>
+              <h2>Verbindung vorbereiten</h2>
+              <p>Die Zugangsdaten werden vom lokalen Python‑Prozess direkt an David Lloyd gesendet. Sie werden weder gespeichert noch protokolliert.</p>
+            </div>
+            <div class="credentials">
+              <div>
+                <label for="username">Benutzername</label>
+                <input id="username" name="username" type="text" autocomplete="username" required placeholder="E-Mail oder Mitgliedskennung">
+              </div>
+              <div>
+                <label for="password">Passwort</label>
+                <input id="password" name="password" type="password" autocomplete="current-password" required placeholder="Passwort">
+              </div>
+            </div>
+            <label for="client-id">Mobile Client-ID</label>
+            <div class="input-wrap">
+              <input id="client-id" name="client_id" autocomplete="off" spellcheck="false" required placeholder="Client-ID einfügen">
+              <span class="field-icon" aria-hidden="true">→</span>
+            </div>
+            <div class="facts">
+              <div><span>Flow</span><strong>Authorization Code + PKCE S256</strong></div>
+              <div><span>Scopes</span><strong>openid · profile · offline_access</strong></div>
+              <div><span>Redirect</span><strong>uk.co.davidlloyd.mobile-app:/login</strong></div>
+            </div>
+            <div class="notice neutral"><span aria-hidden="true">i</span><p>Das Passwort wird nur für die offizielle Okta-Anmeldung verwendet. Session-Token, Verifier, State und Nonce bleiben nur für die Dauer dieses Login-Requests im Arbeitsspeicher.</p></div>
+            <p class="error" id="start-error" role="alert"></p>
+            <button class="primary" type="submit">PKCE-Anmeldung vorbereiten <span>→</span></button>
+          </form>
+
+          <section class="step" data-step="2" aria-labelledby="result-title">
+            <div class="step-heading">
+              <span class="step-kicker success">Verbindung hergestellt</span>
+              <h2 id="result-title">Bereit für WellbeingBot</h2>
+              <p>Übernimm die Werte jetzt in den verschlüsselten Credential‑Speicher. Beim Schließen oder Neuladen verschwinden sie aus dieser Seite.</p>
+            </div>
+            <div class="token-grid">
+              <div class="token-field">
+                <div><label for="access-token">Access-Token</label><span id="expiry"></span></div>
+                <textarea id="access-token" rows="3" readonly></textarea>
+                <button class="copy" data-copy="access-token">Kopieren</button>
+              </div>
+              <div class="token-field">
+                <div><label for="refresh-token">Refresh-Token</label><span>sensibel · langfristig</span></div>
+                <textarea id="refresh-token" rows="3" readonly></textarea>
+                <button class="copy" data-copy="refresh-token">Kopieren</button>
+              </div>
+            </div>
+            <div class="meta" id="token-meta"></div>
+            <div class="notice success-note"><span aria-hidden="true">✓</span><p>Die JWT‑Angaben sind nur unvalidierte Hinweise. Autorisierungsentscheidungen dürfen sich nicht darauf stützen.</p></div>
+            <button class="secondary wide" id="clear" type="button">Tokens aus der Ansicht entfernen</button>
+          </section>
+        </div>
+      </section>
+
+      <footer><span>Lokales Entwicklungswerkzeug</span><span>Keine Buchungen · keine Zugangsdaten-Speicherung · keine Logs</span></footer>
+    </main>
+    <script src="/static/app.js" defer></script>
+  </body>
+</html>
